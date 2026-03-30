@@ -24,6 +24,7 @@ async function startZ() {
         browser: ["Ubuntu", "Chrome", "20.0.04"]
     });
 
+    // --- PAIRING SYSTEM ---
     if (!sock.authState.creds.registered) {
         console.clear();
         console.log("\x1b[32m[ Z-RELAX PAIRING SYSTEM ]\x1b[0m");
@@ -43,10 +44,12 @@ async function startZ() {
         const body = (type === 'conversation') ? m.message.conversation : (type === 'extendedTextMessage') ? m.message.extendedTextMessage.text : (type === 'imageMessage') ? m.message.imageMessage.caption : (type === 'videoMessage') ? m.message.videoMessage.caption : '';
         const command = body.toLowerCase();
 
+        // Fitur .hai
         if (command === '.hai') {
             await sock.sendMessage(from, { text: 'Hai juga, enjoy yaa make Z-RELAX bot. Relax cuy ini ga bahaya kok!' }, { quoted: m });
         }
 
+        // Fitur .rvo (Anti View-Once)
         if (command === '.rvo') {
             const quoted = m.message.extendedTextMessage?.contextInfo?.quotedMessage;
             const viewOnce = quoted?.viewOnceMessageV2?.message || quoted?.viewOnceMessage?.message;
@@ -62,18 +65,23 @@ async function startZ() {
                 }
             }
         }
+        
+        // Fitur .status
+        if (command === '.status') {
+            await sock.sendMessage(from, { text: 'Z-RELAX Online & Mantap, Men! 🔥' }, { quoted: m });
+        }
     });
 
     sock.ev.on('connection.update', (update) => {
         const { connection, lastDisconnect } = update;
         if (connection === 'open') {
             console.clear();
-            console.log("\x1b[32m\n███████╗███████╗██╗  ██╗██████╗  ██████╗  ██╗\n╚══███╔╝██╔════╝╚██╗██╔╝██╔══██╗██╔═████╗███║\n  ███╔╝ █████╗   ╚███╔╝ ██████╔╝██║██╔██║╚██║\n ███╔╝  ██╔══╝   ██╔██╗ ██╔══██╗████╔╝██║ ██║\n███████╗███████╗██╔╝ ██╗██║  ██║╚██████╔╝ ██║\n╚══════╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝  ╚═╝\x1b[0m");
+            console.log("\x1b[32m\n███████╗      ██████╗ ███████╗██╗      █████╗ ██╗  ██╗\n╚══███╔╝      ██╔══██╗██╔════╝██║     ██╔══██╗╚██╗██╔╝\n  ███╔╝ █████╗██████╔╝█████╗  ██║     ███████║ ╚███╔╝ \n ███╔╝  ╚════╝██╔══██╗██╔══╝  ██║     ██╔══██║ ██╔██╗ \n███████╗      ██║  ██║███████╗███████╗██║  ██║██╔╝ ██╗\n╚══════╝      ╚═╝  ╚═╝╚══════╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝\x1b[0m");
             console.log("--------------------------------------------------");
-            console.log("\x1b[36mInstagram : @hznxwick\x1b[0m");
-            console.log("\x1b[35mTiktok    : @morphdzt\x1b[0m");
+            console.log("\x1b[36mPROJECT   : Z-RELAX MULTI DEVICE\x1b[0m");
+            console.log("\x1b[35mDEVELOPER : ZEXR01 (@hznxwick)\x1b[0m");
             console.log("--------------------------------------------------");
-            console.log("\x1b[32m[ STATUS ] Z-RELAX Online! Gaskeun ZEXR01! 🔥\x1b[0m\n");
+            console.log("\x1b[32m[ STATUS ] Bot Online! Relax cuy ini ga bahaya kok! 🔥\x1b[0m\n");
         }
         if (connection === 'close') {
             const shouldReconnect = (lastDisconnect.error)?.output?.statusCode !== DisconnectReason.loggedOut;
@@ -82,4 +90,4 @@ async function startZ() {
     });
 }
 startZ();
-
+               
